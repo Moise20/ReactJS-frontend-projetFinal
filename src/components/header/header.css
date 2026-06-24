@@ -73,11 +73,77 @@ header.active {
   z-index: 9999;
   background: #fff;
 }
+/* Cart icon + badge */
+.cart-icon-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #e94560;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* Profile avatar button */
+.profile-avatar {
+  background: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #333;
+}
+
+.profile-user-info {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+.profile-email { font-size: 0.85rem; color: #777; }
+
+.login-link {
+  background: #e94560;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.login-link:hover { background: #c73652; }
+
+/* Profil dropdown — liens */
+.openProfile a { text-decoration: none; color: inherit; }
+
+.profile {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
 @media screen and (max-width: 768px) {
-  header .search {
-    display: none;
-  }
-  nav {
-    display: none;
-  }
+  header .search { display: none; }
+  nav { display: none; }
 }

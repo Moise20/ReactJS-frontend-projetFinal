@@ -1,37 +1,45 @@
-import React from "react"
-import logo from "../../assets/images/logo.svg"
-import "./header.css"
-import { User } from "./User"
-import { nav } from "../../assets/data/data"
-import { Link } from "react-router-dom"
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { User } from './User';
+import { nav } from '../../assets/data/data';
+import './header.css';
 
 export const Header = () => {
-   window.addEventListener("scroll", function () {
-    const header = this.document.querySelector(".header")
-    header.classList.toggle("active", this.window.scrollY > 100)
-  }) 
+  // [LEARN] On déplace l'addEventListener dans useEffect pour :
+  // [LEARN] 1. Ne l'ajouter qu'une fois au montage (pas à chaque render)
+  // [LEARN] 2. Le supprimer au démontage (cleanup) pour éviter les fuites mémoire
+  // [LEARN] La fonction retournée par useEffect est le "cleanup" : React l'appelle
+  // [LEARN] quand le composant est détruit. Toujours nettoyer les event listeners !
+  useEffect(() => {
+    const handleScroll = () => {
+      const header = document.querySelector('.header');
+      if (header) header.classList.toggle('active', window.scrollY > 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <>
-      <header className='header'>
-        <div className='scontainer flex'>
-          <div className='logo'>
-            
-            <img src="./panas_blog_logo.png" alt="Logo" width='100px'/>
-          </div>
-          <nav>
-            <ul>
-              {nav.map((link) => (
-                <li key={link.id}>
-                  <Link to={link.url}>{link.text}</Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div className='account flexCenter'>
-            <User />
-          </div>
+    <header className="header">
+      <div className="scontainer flex">
+        <div className="logo">
+          <Link to="/">
+            <img src="/panas_blog_logo.png" alt="Logo" width="100px" />
+          </Link>
         </div>
-      </header>
-    </>
-  )
-}
+        <nav>
+          <ul>
+            {nav.map((link) => (
+              <li key={link.id}>
+                <Link to={link.url}>{link.text}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="account flexCenter">
+          <User />
+        </div>
+      </div>
+    </header>
+  );
+};

@@ -1,183 +1,99 @@
-import React, { useState, useEffect } from "react";
-import "./create.css";
-import { createObjectURL } from 'blob-util';
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { useHistory, useParams } from "react-router-dom";
-import axios from "axios";
-import userEvent from "@testing-library/user-event";
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import api from '../../api/axios';
+import './create.css';
+
 export const Edit = () => {
-
-
   const { id } = useParams();
-  const history = useHistory();
-  console.log(id);
-  const [useredit, setUseredit] = useState({ title: '', body: '', image: '' });
-  const handleReset = () => {
-    setUseredit({ title: '', body: '', image: '' });
-    setImage(null);
-    setImageUrl(null);
-  }
+  const navigate = useNavigate();
+  const [article, setArticle] = useState({ title: '', body: '', price: '', stock: '' });
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const edituser = async () => {
-      const reqdata = await fetch(`http://localhost:3301/blog/${id}`);
-      const res = await reqdata.json();
-      setUseredit(res);
-    }
-    edituser();
+    api.get(`/blog/${id}`).then((res) => setArticle(res.data));
   }, [id]);
 
-  const [msg, setMsg] = useState("");
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+    setImage(file);
+    if (file) setPreview(URL.createObjectURL(file));
+  }
 
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // Empêcher la page de se recharger lors de la soumission du formulaire
-
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
-    formData.append("title", useredit.title);
-    formData.append("body", useredit.body);
-    formData.append("image", image);
-    console.log("formData", formData);
-
-
+    formData.append('title', article.title);
+    formData.append('body', article.body);
+    if (article.price !== '') formData.append('price', article.price);
+    if (article.stock !== '') formData.append('stock', article.stock);
+    if (image) formData.append('image', image);
 
     try {
-      const response = await fetch(`http://localhost:3301/blog/${id}`, {
-        method: 'PUT',
-        body: formData,
-
-      });
-      console.log(JSON.parse(JSON.stringify(formData)))
-
-      if (response.ok) {
-        // // Reset form fields after submission
-        // setTitle("");
-        // setBody("");
-        // setImage(null);
-        console.log('Article modifié avec succès!');
-        handleReset(); // Appel de la fonction de réinitialisation après la soumission réussie
-        history.push("/");
-
-      } else {
-        console.log('Erreur lors de la modification de l\'article.');
-      }
-    } catch (error) {
-      console.log(error.message);
+      await api.put(`/blog/${id}`, formData);
+      navigate('/');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Erreur lors de la modification');
+    } finally {
+      setLoading(false);
     }
-
-
-
-
-  };
-
-
-
-
-  // const handleImageChange = (event) => {
-  //   setImage(event.target.files[0]);
-  // };
-
-  // const handleTitleChange = (event) => {
-  //   setTitle(event.target.value);
-  // }
-
-  // const handleBodyChange = (event) => {
-  //   setBody(event.target.value);
-  // }
-
-  // const handleImageChange = (event) => {
-  //   setUseredit({ ...useredit, image: event.target.files[0] });
-  // };
-
-  const handleImageChange = (event) => {
-    const selectedImage = event.target.files[0];
-    setImage(selectedImage);
-    setImageUrl(createObjectURL(selectedImage));
-    console.log("image", selectedImage);
-  };
-  const handleTitleChange = (event) => {
-    setUseredit({ ...useredit, title: event.target.value });
-    console.log("title", useredit.title);
   }
 
-  const handleBodyChange = (event) => {
-    setUseredit({ ...useredit, body: event.target.value });
-    console.log("body", useredit.body);
-  }
-
-  const handleEdit = (e) => {
-    setUseredit({ ...useredit, [e.target.name]: e.target.value });
-  }
-
-  // const handleArticleUpdate = async (e) => {
-  //   e.preventDefault();
-  //   const response = await axios.put(`http://localhost:3301/blog/${id}`, useredit);
-  //   setMsg(response.data.msg);
-
-  // }
-
+  const displayImage = preview || (article.image ? `${process.env.REACT_APP_API_URL}${article.image}` : null);
 
   return (
-    <>
-      <section className="newPost">
-        <div className="container boxItems">
-          {<div className="img ">
-            {imageUrl ? (
-              <img src={imageUrl} alt="image" className="image-preview" />
-            ) : (
-              <img
-                src="https://images.pexels.com/photos/6424244/pexels-photo-6424244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt="image"
-                className="image-preview"
-              />
-            )}
-          </div>}
-          <form onSubmit={handleSubmit}>
-            {<div className="inputfile flexCenter">
-              <input
-                type="file"
-                accept="image/*"
-                alt="img"
-                onChange={handleImageChange}
-
-              />
-            </div>}
-            {
-              <div> <input
-                type="text"
-                placeholder="Title"
-                value={useredit.title}
-                onChange={(event => handleTitleChange(event))}
-              //onChange={(event) => setTitle(event.target.value)}
-              //onChange={(e) => handleEdit(e)}
-              //onChange={(e) => setTitle({ title: e.target.value })}
-              /></div>
-
-            }
-
-
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              value={useredit.body}
-              onChange={handleBodyChange}
-            //onChange={(event) => setBody(event.target.value)}
-            //onChange={(e) => handleEdit(e)}
-            //onChange={(e) => setBody({ body: e.target.value })}
-            ></textarea>
-
-            <button type="submit" className="button">Edit Post</button>
-          </form>
-        </div>
-      </section>
-    </>
+    <section className="newPost">
+      <div className="container boxItems">
+        {displayImage && (
+          <div className="img">
+            <img src={displayImage} alt="aperçu" className="image-preview" />
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
+          <div className="inputfile flexCenter">
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+          </div>
+          <input
+            type="text"
+            placeholder="Titre"
+            value={article.title}
+            onChange={(e) => setArticle({ ...article, title: e.target.value })}
+            required
+          />
+          <textarea
+            rows="8"
+            placeholder="Description..."
+            value={article.body}
+            onChange={(e) => setArticle({ ...article, body: e.target.value })}
+            required
+          />
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <input
+              type="number"
+              placeholder="Prix (€)"
+              value={article.price ?? ''}
+              onChange={(e) => setArticle({ ...article, price: e.target.value })}
+              min="0"
+              step="0.01"
+              style={{ flex: 1 }}
+            />
+            <input
+              type="number"
+              placeholder="Stock"
+              value={article.stock ?? ''}
+              onChange={(e) => setArticle({ ...article, stock: e.target.value })}
+              min="0"
+              style={{ flex: 1 }}
+            />
+          </div>
+          <button type="submit" className="button" disabled={loading}>
+            {loading ? 'Modification...' : 'Modifier le produit'}
+          </button>
+        </form>
+      </div>
+    </section>
   );
-}
-
+};

@@ -69,6 +69,11 @@
   display: flex;
   margin-right:10px ;
   margin-left: 10px;
-  
+}
 
+.card-price {
+  color: #e94560;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 8px 0;
 }

@@ -1,76 +1,58 @@
-import React, { useState } from "react"
-import { IoSettingsOutline } from "react-icons/io5"
-import { BsBagCheck } from "react-icons/bs"
-import { AiOutlineHeart } from "react-icons/ai"
-import { GrHelp } from "react-icons/gr"
-import { BiLogOut } from "react-icons/bi"
-import { RiImageAddLine } from "react-icons/ri"
-import { Link } from "react-router-dom"
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { RiImageAddLine } from 'react-icons/ri';
+import { BsBagCheck } from 'react-icons/bs';
+import { BiLogOut } from 'react-icons/bi';
+import { IoPersonOutline } from 'react-icons/io5';
+import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
 
 export const User = () => {
-  const user = true
-  const [profileOpen, setProfileOpen] = useState(false)
-  const close = () => {
-    setProfileOpen(false)
-  }
-  return (
-    <>
-      <div className='profile'>
-        {user ? (
-          <>
-            <button className='img' onClick={() => setProfileOpen(!profileOpen)}>
-              
-              <img src="./panas_blog_logo.png" alt="Logo" width='100px'/>
-            </button>
-            {profileOpen && (
-              <div className='openProfile boxItems' onClick={close}>
-                <Link to=''>
-                  <div className='image'>
-                    <div className='img'>
-                    <img src="./panas_blog_logo.png" alt="Logo" width='100px'/>
-                      
-                    </div>
-                    <div className='text'>
-                      <h4>Moïse PANA</h4>
-                      <label>Lyon, FRANCE</label>
-                    </div>
-                  </div>
-                </Link>
-                <Link to='/create'>
-                  <button className='box'>
-                    <RiImageAddLine className='icon' />
-                    <h4>Create Post</h4>
-                  </button>
-                </Link>
-                {/* <Link to='/login'>
-                  <button className='box'>
-                    <IoSettingsOutline className='icon' />
-                    <h4>My Account</h4>
-                  </button>
-                </Link> */}
-                {/* <button className='box'>
-                  <BsBagCheck className='icon' />
-                  <h4>My Order</h4>
-                </button>
-                <button className='box'>
-                  <AiOutlineHeart className='icon' />
-                  <h4>Wishlist</h4>
-                </button>
-                <button className='box'>
-                  <GrHelp className='icon' />
-                  <h4>Help</h4>
-                </button> */}
-                {/* <button className='box'>
-                  <BiLogOut className='icon' />
-                  <h4>Log Out</h4>
-                </button> */}
-              </div>
-            )}
-          </>
-        ) : (
-          <button>My Account</button>
-        )}
+  // [LEARN] On remplace const user = true (hardcodé) par le vrai state d'auth.
+  // [LEARN] useAuth() lit le contexte : si l'utilisateur est connecté, user contient
+  // [LEARN] son profil ; sinon c'est null. L'affichage s'adapte automatiquement.
+  const { user, logout } = useAuth();
+  const { cartCount } = useCart();
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  if (!user) {
+    return (
+      <div className="profile">
+        <Link to="/login" className="login-link">Connexion</Link>
       </div>
-    </>
-  )
-}
+    );
+  }
+
+  return (
+    <div className="profile">
+      <Link to="/cart" className="cart-icon-btn">
+        <BsBagCheck size={20} />
+        {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+      </Link>
+
+      <button className="profile-avatar" onClick={() => setProfileOpen(!profileOpen)}>
+        <IoPersonOutline size={22} />
+      </button>
+
+      {profileOpen && (
+        <div className="openProfile boxItems" onClick={() => setProfileOpen(false)}>
+          <div className="profile-user-info">
+            <p className="profile-email">{user.email}</p>
+          </div>
+          <Link to="/create" className="box">
+            <RiImageAddLine className="icon" />
+            <h4>Créer un article</h4>
+          </Link>
+          <Link to="/account" className="box">
+            <BsBagCheck className="icon" />
+            <h4>Mes commandes</h4>
+          </Link>
+          <button className="box" onClick={logout}>
+            <BiLogOut className="icon" />
+            <h4>Déconnexion</h4>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
