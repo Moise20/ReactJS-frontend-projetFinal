@@ -1,0 +1,25 @@
+# [LEARN] netlify.toml configure le déploiement automatique sur Netlify.
+# [LEARN] Quand tu connectes le repo GitHub à Netlify, il lit ce fichier
+# [LEARN] pour savoir comment builder et déployer l'application.
+
+[build]
+  # [LEARN] La commande qui génère les fichiers statiques dans /build
+  command = "npm run build"
+  # [LEARN] Le dossier que Netlify va publier (contient index.html + JS/CSS)
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "18"
+  # [LEARN] CI=false évite que les warnings React soient traités comme des erreurs
+  # [LEARN] par le build Netlify (comportement par défaut de Create React App en CI).
+  CI = "false"
+
+# [LEARN] Cette règle est CRITIQUE pour les Single Page Applications (SPA).
+# [LEARN] Sans elle, si un utilisateur accède directement à /details/42,
+# [LEARN] Netlify cherche un fichier /details/42/index.html qui n'existe pas
+# [LEARN] et retourne une 404. La règle redirige tout vers index.html
+# [LEARN] et React Router prend le relais pour afficher la bonne page.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

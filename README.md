@@ -1,70 +1,139 @@
-# Getting Started with Create React App
+# E-Commerce Blog — Frontend React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Product catalog and e-commerce storefront built with **React 18** and **React Router v6**.
 
-## Available Scripts
+![React](https://img.shields.io/badge/React-18-blue?logo=react)
+![React Router](https://img.shields.io/badge/React%20Router-v6-red?logo=reactrouter)
+![Axios](https://img.shields.io/badge/Axios-1.x-purple)
+![CI](https://github.com/Moise20/ReactJS-frontend-projetFinal/actions/workflows/ci.yml/badge.svg)
 
-In the project directory, you can run:
+---
 
-### `yarn start`
+## About the project
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+A product catalog presented as a blog. Visitors can browse products, read details, and place orders after creating an account. The UI is connected to a NestJS REST API.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This is a personal portfolio project built to demonstrate full-stack skills with React and NestJS.
 
-### `yarn test`
+**Backend repository:** [NestJS-backEnd-projetReact](https://github.com/Moise20/NestJS-backEnd-projetReact)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `yarn build`
+## Tech stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Layer | Technology |
+|---|---|
+| Framework | React 18 |
+| Routing | React Router v6 |
+| HTTP client | Axios (with JWT interceptor) |
+| State management | Context API (auth + cart) |
+| Styling | CSS modules |
+| Icons | react-icons |
+| CI/CD | GitHub Actions + SonarCloud |
+| Hosting | Netlify |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Features
 
-### `yarn eject`
+- **Authentication** — register, login, logout with JWT token management
+- **Product listing** — browse the full catalog with tags, likes and comments
+- **Product detail** — view full description, price, stock and add to cart
+- **Cart** — add items, adjust quantities, see total
+- **Checkout** — place an order from the cart
+- **Account** — view order history with status tracking
+- **Protected routes** — cart and account pages require authentication
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Getting started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Prerequisites
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Node.js 18+
+- The [backend API](https://github.com/Moise20/NestJS-backEnd-projetReact) running locally or deployed
 
-## Learn More
+### Installation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+git clone https://github.com/Moise20/ReactJS-frontend-projetFinal.git
+cd ReactJS-frontend-projetFinal
+npm install --legacy-peer-deps
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Environment variables
 
-### Code Splitting
+Copy `.env.example` to `.env`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+cp .env.example .env
+```
 
-### Analyzing the Bundle Size
+| Variable | Description |
+|---|---|
+| `REACT_APP_API_URL` | URL of the backend API (e.g. `http://localhost:3301`) |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Run in development
 
-### Making a Progressive Web App
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The app will open at `http://localhost:3000`.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Project structure
 
-### Deployment
+```
+src/
+├── api/
+│   └── axios.js          # Axios instance with JWT interceptor
+├── context/
+│   ├── AuthContext.jsx   # Global authentication state
+│   └── CartContext.jsx   # Global cart state
+├── components/
+│   ├── blog/             # Product card list
+│   ├── category/         # Category carousel
+│   ├── create/           # Create / Edit product forms
+│   ├── header/           # Navigation bar with user menu
+│   ├── footer/           # Footer
+│   └── common/
+│       └── ProtectedRoute.jsx
+└── pages/
+    ├── home/             # Home page (product listing)
+    ├── login/            # Login and Register pages
+    ├── details/          # Product detail page
+    ├── cart/             # Cart page
+    └── account/          # Account and order history
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `yarn build` fails to minify
+## React Router v6 — key changes from v5
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| v5 | v6 |
+|---|---|
+| `<Switch>` | `<Routes>` |
+| `<Route component={X}>` | `<Route element={<X />}>` |
+| `useHistory()` | `useNavigate()` |
+| `match.params.id` | `useParams()` |
+| `exact` required | Exact matching by default |
+
+---
+
+## Deployment
+
+This app is designed to be deployed on [Netlify](https://netlify.com).
+
+Set the `REACT_APP_API_URL` environment variable in your Netlify site settings to point to your deployed backend URL.
+
+---
+
+## Screenshots
+
+> Add screenshots here after deployment
+
+---
+
+*Portfolio project — Moïse PANA*
