@@ -92,8 +92,7 @@ export const Card = () => {
         {articles.map((item) => (
           <div className="box boxItems" key={item.id}>
             <div className="img">
-              {/* [LEARN] Correction du bug : src doit être une expression JS {`...`},
-              // [LEARN] pas une chaîne littérale "{item.image}". */}
+              {/* [LEARN] Correction du bug : src doit être une expression JS {`...`}, pas une chaîne littérale "{item.image}". */}
               <img
                 src={`${process.env.REACT_APP_API_URL}${item.image}`}
                 alt={item.title}

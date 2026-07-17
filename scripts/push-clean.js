@@ -15,8 +15,12 @@ const TARGET_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 // [LEARN] Dossiers à ignorer lors du scan des fichiers
 const IGNORED_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', '.next']);
 
-// [LEARN] Marqueur utilisé pour identifier les commentaires pédagogiques
+// [LEARN] Marqueurs utilisés pour identifier les commentaires pédagogiques.
+// [LEARN] Deux styles possibles : `// [LEARN]` (JS classique) et `{/* [LEARN] ... */}`
+// [LEARN] (JSX, doit être auto-suffisant sur une seule ligne, sinon la suppression
+// [LEARN] casserait la syntaxe en ne retirant que la moitié du commentaire).
 const LEARN_MARKER = '// [LEARN]';
+const JSX_LEARN_MARKER = '{/* [LEARN]';
 
 function run(cmd, silent = false) {
   return execSync(cmd, {
@@ -41,11 +45,20 @@ function getAllFiles(dir) {
   return results;
 }
 
+function isLearnLine(line) {
+  const trimmed = line.trimStart();
+  if (trimmed.startsWith(LEARN_MARKER)) return true;
+  // [LEARN] Un commentaire JSX n'est retiré que s'il se ferme sur la même ligne
+  // [LEARN] (sinon on ne retirerait que l'ouverture ou la fermeture et on casserait le JSX).
+  if (trimmed.startsWith(JSX_LEARN_MARKER) && trimmed.includes('*/}')) return true;
+  return false;
+}
+
 function stripLearnComments(filePath) {
   const original = fs.readFileSync(filePath, 'utf8');
   const cleaned = original
     .split('\n')
-    .filter((line) => !line.trimStart().startsWith(LEARN_MARKER))
+    .filter((line) => !isLearnLine(line))
     .join('\n');
 
   if (cleaned !== original) {
