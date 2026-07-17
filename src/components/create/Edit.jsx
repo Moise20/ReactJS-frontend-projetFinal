@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
+import { getImageUrl } from '../../utils/image';
 import './create.css';
 
 export const Edit = () => {
@@ -42,7 +43,7 @@ export const Edit = () => {
     }
   }
 
-  const displayImage = preview || (article.image ? `${process.env.REACT_APP_API_URL}${article.image}` : null);
+  const displayImage = preview || getImageUrl(article.image);
 
   return (
     <section className="newPost">

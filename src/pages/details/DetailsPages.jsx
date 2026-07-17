@@ -7,6 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import api from '../../api/axios';
+import { getImageUrl } from '../../utils/image';
 import './details.css';
 
 function DetailsPages() {
@@ -48,7 +49,7 @@ function DetailsPages() {
         <div className="details-image-wrap">
           {article.image && (
             <img
-              src={`${process.env.REACT_APP_API_URL}${article.image}`}
+              src={getImageUrl(article.image)}
               alt={article.title}
               className="details-image"
             />

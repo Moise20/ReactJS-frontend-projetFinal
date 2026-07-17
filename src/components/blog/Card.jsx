@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
+import { getImageUrl } from '../../utils/image';
 import './blog.css';
 
 export const Card = () => {
@@ -92,9 +93,8 @@ export const Card = () => {
         {articles.map((item) => (
           <div className="box boxItems" key={item.id}>
             <div className="img">
-              {/* [LEARN] Correction du bug : src doit être une expression JS {`...`}, pas une chaîne littérale "{item.image}". */}
               <img
-                src={`${process.env.REACT_APP_API_URL}${item.image}`}
+                src={getImageUrl(item.image)}
                 alt={item.title}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import api from '../../api/axios';
+import { getImageUrl } from '../../utils/image';
 import './cart.css';
 
 function Cart() {
@@ -49,7 +50,7 @@ function Cart() {
             <div key={item.id} className="cart-item">
               {item.article.image && (
                 <img
-                  src={`${process.env.REACT_APP_API_URL}${item.article.image}`}
+                  src={getImageUrl(item.article.image)}
                   alt={item.article.title}
                   className="cart-item-img"
                 />
