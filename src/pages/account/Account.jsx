@@ -1,9 +1,3 @@
-// [LEARN] La page Compte affiche le profil de l'utilisateur connecté et son historique
-// [LEARN] de commandes. Elle est protégée par ProtectedRoute dans App.jsx.
-// [LEARN]
-// [LEARN] useLocation() permet de lire l'état passé par navigate() au moment
-// [LEARN] de la redirection. Ex: après une commande, on passe { newOrderId: 42 }
-// [LEARN] pour surligner la nouvelle commande.
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';

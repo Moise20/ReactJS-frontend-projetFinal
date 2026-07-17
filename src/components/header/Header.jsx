@@ -5,11 +5,6 @@ import { nav } from '../../assets/data/data';
 import './header.css';
 
 export const Header = () => {
-  // [LEARN] On déplace l'addEventListener dans useEffect pour :
-  // [LEARN] 1. Ne l'ajouter qu'une fois au montage (pas à chaque render)
-  // [LEARN] 2. Le supprimer au démontage (cleanup) pour éviter les fuites mémoire
-  // [LEARN] La fonction retournée par useEffect est le "cleanup" : React l'appelle
-  // [LEARN] quand le composant est détruit. Toujours nettoyer les event listeners !
   useEffect(() => {
     const handleScroll = () => {
       const header = document.querySelector('.header');

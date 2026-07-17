@@ -1,9 +1,3 @@
-// [LEARN] Page de connexion. Elle utilise useAuth() pour accéder à la fonction login()
-// [LEARN] définie dans AuthContext — pas besoin de passer des props.
-// [LEARN]
-// [LEARN] useNavigate() est le hook v6 pour naviguer programmatiquement.
-// [LEARN] En v5 c'était useHistory() + history.push('/').
-// [LEARN] En v6 c'est useNavigate() + navigate('/').
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -18,8 +12,6 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
-    // [LEARN] e.preventDefault() empêche le rechargement de la page —
-    // [LEARN] comportement par défaut d'un formulaire HTML en mode non-SPA.
     e.preventDefault();
     setError('');
     setLoading(true);

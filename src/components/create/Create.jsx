@@ -4,8 +4,6 @@ import api from '../../api/axios';
 import './create.css';
 
 export const Create = () => {
-  // [LEARN] useNavigate() remplace useHistory() de react-router v5.
-  // [LEARN] navigate('/') remplace history.push('/').
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');

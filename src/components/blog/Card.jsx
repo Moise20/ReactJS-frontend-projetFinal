@@ -1,5 +1,3 @@
-// [LEARN] Card est le composant principal de la page d'accueil.
-// [LEARN] Il affiche la liste des produits/articles récupérés depuis le backend.
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {

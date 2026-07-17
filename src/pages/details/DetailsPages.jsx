@@ -1,7 +1,3 @@
-// [LEARN] useParams() est le hook v6 pour lire les paramètres de route.
-// [LEARN] Pour la route '/details/:id', useParams() retourne { id: '42' }.
-// [LEARN] En v5 on utilisait match.params.id via les props injectées par Route.
-// [LEARN] En v6 plus besoin de props spéciales, on utilise directement le hook.
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';

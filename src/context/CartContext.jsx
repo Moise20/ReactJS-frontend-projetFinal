@@ -1,7 +1,3 @@
-// [LEARN] CartContext gère l'état du panier côté frontend.
-// [LEARN] On stocke aussi le panier en localStorage pour survivre au refresh de page.
-// [LEARN] Note : en production on synchroniserait avec le backend à chaque action.
-// [LEARN] Ici on garde une approche mixte : localStorage pour la UI, API pour la persistance.
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
 import { useAuth } from './AuthContext';
@@ -19,9 +15,6 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState(null);
   const [cartCount, setCartCount] = useState(0);
 
-  // [LEARN] useCallback mémorise la fonction pour éviter qu'elle soit recréée
-  // [LEARN] à chaque render, ce qui éviterait une boucle infinie dans le useEffect
-  // [LEARN] qui en dépend (fetchCart est dans son tableau de dépendances).
   const fetchCart = useCallback(async () => {
     if (!user) { setCart(null); setCartCount(0); return; }
     try {

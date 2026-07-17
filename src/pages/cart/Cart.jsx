@@ -11,9 +11,6 @@ function Cart() {
   const [ordering, setOrdering] = useState(false);
   const [orderError, setOrderError] = useState('');
 
-  // [LEARN] On calcule le total côté frontend pour l'affichage immédiat.
-  // [LEARN] Le backend recalcule et valide le total au moment de la commande.
-  // [LEARN] On ne fait jamais confiance au total envoyé par le client pour facturer.
   const total = cart?.items?.reduce(
     (sum, item) => sum + Number(item.article.price) * item.quantity,
     0,

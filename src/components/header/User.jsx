@@ -8,9 +8,6 @@ import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 
 export const User = () => {
-  // [LEARN] On remplace const user = true (hardcodé) par le vrai state d'auth.
-  // [LEARN] useAuth() lit le contexte : si l'utilisateur est connecté, user contient
-  // [LEARN] son profil ; sinon c'est null. L'affichage s'adapte automatiquement.
   const { user, logout } = useAuth();
   const { cartCount } = useCart();
   const [profileOpen, setProfileOpen] = useState(false);
